@@ -1,19 +1,26 @@
 {
-	"short_name": "First React App",
-	"name": "First react app",
+	"short_name": "Space ITK PPKE",
+	"name": "Space ITK PPKE",
 	"icons": [
 		{
 			"src": "favicon.ico",
-			"sizes": "64x64",
+			"sizes": "48x48",
 			"type": "image/x-icon"
 		},
 		{
-			"src": "logo192.png",
+			"src": "icon-192x192-maskable.png",
 			"type": "image/png",
-			"sizes": "192x192"
+			"sizes": "192x192",
+			"purpose": "maskable"
 		},
 		{
-			"src": "logo512.png",
+			"src": "icon-192x192.png",
+			"type": "image/png",
+			"sizes": "192x192",
+			"purpose": "any"
+		},
+		{
+			"src": "icon-512x512.png",
 			"type": "image/png",
 			"sizes": "512x512"
 		}
