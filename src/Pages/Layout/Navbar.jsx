@@ -1,21 +1,90 @@
-import React from "react";
+import React, { useState } from "react";
+import SidebarNavigation from "./Sidebar/SidebarNavigation";
 
 export const Navbar = () => {
+	const [show, setShow] = useState(false);
 	return (
 		<header class="w-full h-16 z-40 flex items-center justify-between">
-			<div class="block lg:hidden ml-6">
-				<button class="flex p-2 items-center rounded-full bg-white shadow text-gray-500 text-md">
-					<svg
-						width="20"
-						height="20"
-						class="text-gray-400"
-						fill="currentColor"
-						viewBox="0 0 1792 1792"
-						xmlns="http://www.w3.org/2000/svg"
+			<div class="block lg:hidden pl-6 pt-6">
+				<div
+					id="menu"
+					className="text-gray-800"
+					onClick={() => setShow(!show)}
+				>
+					{show ? (
+						""
+					) : (
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							className=""
+							width={24}
+							height={24}
+							viewBox="0 0 24 24"
+							strokeWidth="1.5"
+							stroke="currentColor"
+							fill="none"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+						>
+							<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+							<line x1={4} y1={6} x2={20} y2={6} />
+							<line x1={4} y1={12} x2={20} y2={12} />
+							<line x1={4} y1={18} x2={20} y2={18} />
+						</svg>
+					)}
+				</div>
+				{show && (
+					<div
+						className={
+							show
+								? "w-full xl:hidden h-full absolute z-40  transform  translate-x-0 "
+								: "   w-full xl:hidden h-full absolute z-40  transform -translate-x-full"
+						}
 					>
-						<path d="M1664 1344v128q0 26-19 45t-45 19h-1408q-26 0-45-19t-19-45v-128q0-26 19-45t45-19h1408q26 0 45 19t19 45zm0-512v128q0 26-19 45t-45 19h-1408q-26 0-45-19t-19-45v-128q0-26 19-45t45-19h1408q26 0 45 19t19 45zm0-512v128q0 26-19 45t-45 19h-1408q-26 0-45-19t-19-45v-128q0-26 19-45t45-19h1408q26 0 45 19t19 45z"></path>
-					</svg>
-				</button>
+						<div
+							className="bg-gray-800 opacity-50 w-full h-full"
+							onClick={() => setShow(!show)}
+						/>
+						<div className="w-64 z-40 fixed overflow-y-auto z-40 top-0 bg-white shadow h-full flex-col justify-between xl:hidden pb-4 transition duration-150 ease-in-out">
+							<div className="px-6 h-full">
+								<div className="flex flex-col justify-between h-full w-full">
+									<div>
+										<div className="mt-6 flex w-full items-center justify-between">
+											<div className="flex items-center justify-between w-full">
+												<div
+													id="cross"
+													className="text-gray-800"
+													onClick={() => setShow(!show)}
+												>
+													<svg
+														xmlns="http://www.w3.org/2000/svg"
+														className="icon icon-tabler icon-tabler-x"
+														width={24}
+														height={24}
+														viewBox="0 0 24 24"
+														strokeWidth="1.5"
+														stroke="currentColor"
+														fill="none"
+														strokeLinecap="round"
+														strokeLinejoin="round"
+													>
+														<path
+															stroke="none"
+															d="M0 0h24v24H0z"
+														/>
+														<line x1={18} y1={6} x2={6} y2={18} />
+														<line x1={6} y1={6} x2={18} y2={18} />
+													</svg>
+												</div>
+											</div>
+										</div>
+										<SidebarNavigation />
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				)}
 			</div>
 			<div class="relative z-20 flex flex-col justify-end h-full px-10 md:w-full">
 				<div class="relative p-1 flex items-center w-full space-x-4 justify-end">
