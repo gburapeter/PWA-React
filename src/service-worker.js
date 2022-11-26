@@ -93,6 +93,24 @@ registerRoute(
 	})
 );
 
+// PUSH NOTIS
+self.addEventListener("push", function (event) {
+	console.log("[Service Worker] Push Received.");
+	console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
+
+	const title = "New course added";
+	const options = {
+		body: "Check the website",
+		icon: "../public/icon.png",
+	};
+
+	const notificationPromise = self.registration.showNotification(
+		title,
+		options
+	);
+	event.waitUntil(notificationPromise);
+});
+
 // This allows the web app to trigger skipWaiting via
 // registration.waiting.postMessage({type: 'SKIP_WAITING'})
 self.addEventListener("message", (event) => {

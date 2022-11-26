@@ -9,6 +9,25 @@
 
 // To learn more about the benefits of this model and instructions on how to
 // opt-in, read https://cra.link/PWA
+let isSubscribed = false;
+let registrationSW = null;
+const applicationServerPublicKey =
+	"BG9CujwUGORynyXSwG-UHuwdulAtSDOxLWWie7iOVz9MDWttaT5eHyOplB7F7hvvCZGVtyhMwqe-AAT1shxEPiA";
+
+function urlB64ToUint8Array(base64String) {
+	const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+	const base64 = (base64String + padding)
+		.replace(/\-/g, "+")
+		.replace(/_/g, "/");
+
+	const rawData = window.atob(base64);
+	const outputArray = new Uint8Array(rawData.length);
+
+	for (let i = 0; i < rawData.length; ++i) {
+		outputArray[i] = rawData.charCodeAt(i);
+	}
+	return outputArray;
+}
 
 const isLocalhost = Boolean(
 	window.location.hostname === "localhost" ||
@@ -40,12 +59,17 @@ export function register(config) {
 
 				// Add some additional logging to localhost, pointing developers to the
 				// service worker/PWA documentation.
+				// console.log(isSubscribed);
 				navigator.serviceWorker.ready.then(() => {
 					console.log(
 						"This web app is being served cache-first by a service " +
 							"worker. To learn more, visit https://cra.link/PWA"
 					);
 				});
+
+				const subscriptionButton = document.querySelector(
+					".subscriptionButton"
+				);
 			} else {
 				// Is not localhost. Just register service worker
 				registerValidSW(swUrl, config);
@@ -58,11 +82,26 @@ function registerValidSW(swUrl, config) {
 	navigator.serviceWorker
 		.register(swUrl)
 		.then((registration) => {
+			registrationSW = registration;
 			registration.onupdatefound = () => {
 				const installingWorker = registration.installing;
 				if (installingWorker == null) {
 					return;
 				}
+
+				//push manager
+				registration.pushManager
+					.getSubscription()
+					.then(function (subscription) {
+						isSubscribed = !(subscription === null);
+
+						if (isSubscribed) {
+							console.log("User IS subscribed.");
+						} else {
+							console.log("User is NOT subscribed.");
+						}
+					});
+				//push manager end
 				installingWorker.onstatechange = () => {
 					if (installingWorker.state === "installed") {
 						if (navigator.serviceWorker.controller) {
@@ -138,4 +177,26 @@ export function unregister() {
 				console.error(error.message);
 			});
 	}
+}
+
+export function subscribeUser() {
+	const applicationServerKey = urlB64ToUint8Array(applicationServerPublicKey);
+	registrationSW.pushManager
+		.subscribe({
+			userVisibleOnly: true,
+			applicationServerKey: applicationServerKey,
+		})
+		.then(function (subscription) {
+			console.log("User is subscribed.");
+			console.log(
+				"Received PushSubscription: ",
+				JSON.stringify(subscription)
+			);
+			// updateSubscriptionOnServer(subscription);
+
+			isSubscribed = true;
+		})
+		.catch(function (error) {
+			console.error("Failed to subscribe the user: ", error);
+		});
 }
