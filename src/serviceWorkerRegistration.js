@@ -12,7 +12,7 @@
 let isSubscribed = false;
 let registrationSW = null;
 const applicationServerPublicKey =
-	"BG9CujwUGORynyXSwG-UHuwdulAtSDOxLWWie7iOVz9MDWttaT5eHyOplB7F7hvvCZGVtyhMwqe-AAT1shxEPiA";
+	"BPvZQLDhxt1zH4KtfZ2Wrms-XPKzRr4j-Y5XISWJG2AL-guQUwL6n22HZbfN6x77CW7DsFUNHKnrgtuRBxJ_CC0";
 
 function urlB64ToUint8Array(base64String) {
 	const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
@@ -66,10 +66,6 @@ export function register(config) {
 							"worker. To learn more, visit https://cra.link/PWA"
 					);
 				});
-
-				const subscriptionButton = document.querySelector(
-					".subscriptionButton"
-				);
 			} else {
 				// Is not localhost. Just register service worker
 				registerValidSW(swUrl, config);
@@ -193,10 +189,25 @@ export function subscribeUser() {
 				JSON.stringify(subscription)
 			);
 			// updateSubscriptionOnServer(subscription);
-
+			sendSubscription(subscription);
 			isSubscribed = true;
 		})
 		.catch(function (error) {
 			console.error("Failed to subscribe the user: ", error);
 		});
+}
+
+function sendSubscription(subscription) {
+	console.log("sendinggg..");
+	fetch(`/notification`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({
+			subscription: subscription,
+			title: "Notified by Precision Ordance",
+			description: "someone buy a product",
+		}),
+	});
 }

@@ -1,13 +1,50 @@
-import React from "react";
-import {
-	subscribeUser,
-	getSubscription,
-} from "../../serviceWorkerRegistration";
+import React, { useEffect, useState } from "react";
 import { askPermission } from "../../permissionStatus";
-
+import { subscribeUser } from "../../serviceWorkerRegistration";
 import { Layout } from "../Layout/Layout";
 
 export const Dashboard = () => {
+	const [data, setData] = useState(null);
+	const API = "/test";
+
+	// const fetchPost = () => {
+	// 	fetch("/notification", {
+	// 		method: "POST",
+	// 		headers: {
+	// 			"Content-Type": "application/json",
+	// 		},
+	// 		body: JSON.stringify({
+	// 			title: "Notified by Precision Ordance",
+	// 			description: "someone buy a product",
+	// 		}),
+	// 	})
+	// 		.then((res) => res.json())
+	// 		.then((res) => {
+	// 			setData(res);
+	// 			console.log(res);
+	// 		});
+	// };
+
+	const fetchPost = () => {
+		fetch("http://localhost:5000/test", {
+			headers: {
+				"Content-Type": "application/json",
+			},
+		})
+			.then((res) => res.json())
+			.then((res) => {
+				setData(res);
+				console.log(res);
+			});
+	};
+	useEffect(() => {
+		fetchPost();
+
+		return () => {
+			setData([]);
+		};
+	}, []);
+
 	return (
 		<Layout>
 			<div className="overflow-hidden overflow-x-auto rounded-lg ">
