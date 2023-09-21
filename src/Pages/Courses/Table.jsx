@@ -38,7 +38,7 @@ export const Table = ({ courses }) => {
 						<tbody className="w-full">
 							{courses.map((item, index) => {
 								return (
-									<tr className="cursor-pointer h-20 text-sm text-gray-800 bg-white hover:bg-gray-100 border-b border-t border-gray-100">
+									<tr key={index} className="cursor-pointer h-20 text-sm text-gray-800 bg-white hover:bg-gray-100 border-b border-t border-gray-100">
 										<td className="font-normal w-80 text-left px-4 py-2">
 											<p className="font-medium w-80 overflow-hidden">
 												{item.name}
