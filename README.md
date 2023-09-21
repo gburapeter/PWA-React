@@ -14,14 +14,9 @@ yarn
 ## Usage
 
 ```sh
-yarn dev
+serve -s build
 ```
 
-## Run tests
-
-```sh
-yarn run test
-```
 
 ## Author
 
